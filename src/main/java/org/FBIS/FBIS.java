@@ -32,7 +32,7 @@ public class FBIS {
         return files
                 .filter(fileName -> !EXCLUDED_FILES.contains(fileName.getFileName().toString()))
                 .map(FBIS::parseFile)
-                .flatMap(List::stream)
+                .flatMap(List::stream)              
                 .collect(Collectors.toList());
     }
     private static List<org.apache.lucene.document.Document> parseFile(Path filePath){
