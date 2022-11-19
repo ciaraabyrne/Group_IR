@@ -1,7 +1,8 @@
-package org.example;
+package org.Parsers;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
+import org.apache.lucene.document.StringField;
 import org.apache.lucene.document.TextField;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
@@ -16,7 +17,10 @@ public class FederalReg {
 
     private static List<Document> fedRegisterDocList = new ArrayList<>();
 
-    public static List<Document> loadFedRegisterDocs(String pathToFedRegister) throws IOException {
+    public static List<Document> parseFedRegisterDocs(String pathToFedRegister) throws IOException {
+
+        System.out.println("Parsing FedRegister");
+
         File[] directories = new File(pathToFedRegister).listFiles(File::isDirectory);
         String docno,text,title;
         for (File directory : directories) {
@@ -52,9 +56,9 @@ public class FederalReg {
 
     private static void addFedRegisterDoc(String docno, String text, String title) {
         Document doc = new Document();
-        doc.add(new TextField("docno", docno, Field.Store.YES));
-        doc.add(new TextField("text", text, Field.Store.YES));
-        doc.add(new TextField("headline", title, Field.Store.YES));
+        doc.add(new StringField("DOCNO", docno, Field.Store.YES));
+        doc.add(new TextField("TEXT", text, Field.Store.YES));
+        doc.add(new TextField("HEADLINE", title, Field.Store.YES));
         fedRegisterDocList.add(doc);
     }
 
