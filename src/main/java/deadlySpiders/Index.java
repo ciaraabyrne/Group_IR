@@ -1,9 +1,9 @@
-package org;
+package deadlySpiders;
 
-import org.Parsers.LATimes;
-import org.Parsers.FBIS;
-import org.Parsers.FinancialTimes;
-import org.Parsers.FederalReg;
+import deadlySpiders.Parsers.FBIS;
+import deadlySpiders.Parsers.FederalReg;
+import deadlySpiders.Parsers.FinancialTimes;
+import deadlySpiders.Parsers.LATimes;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.document.Document;
@@ -19,10 +19,6 @@ import java.util.List;
 
 public class Index
 {
-
-    public static void main(String[] args) throws IOException {
-        index("index", "files/fbis", "files/latimes", "files/fr94", "files/ft");
-    }
 
     public static void index(String indexDir, String FBISPath, String laTimesPath, String fedRegPath, String financialTimesPath) throws IOException {
         System.out.println("Building index...");

@@ -1,4 +1,4 @@
-package org.Parsers;
+package deadlySpiders.Parsers;
 
 
 import org.apache.lucene.document.Document;
