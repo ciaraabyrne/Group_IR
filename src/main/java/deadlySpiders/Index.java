@@ -22,7 +22,7 @@ public class Index
 
     public static void index(String indexDir, String FBISPath, String laTimesPath, String fedRegPath, String financialTimesPath) throws IOException {
         System.out.println("Building index...");
-        Analyzer analyzer = ChangedAnalyzer.getAnalyzer();
+        Analyzer analyzer = new ChangedAnalyzer();
         Directory index_dir = FSDirectory.open(Paths.get(indexDir));
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
         config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);

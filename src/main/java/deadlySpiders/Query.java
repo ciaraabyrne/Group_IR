@@ -12,6 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
@@ -37,7 +38,7 @@ public class Query {
 		Elements topics = null;
 		PrintWriter writer = null;
 		QueryParserBase parser = null;
-		Analyzer analyzer = ChangedAnalyzer.getAnalyzer();
+		Analyzer analyzer = new ChangedAnalyzer();
 		IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(indexPath)));
         IndexSearcher searcher = new IndexSearcher(reader);
         searcher.setSimilarity(new BM25Similarity());
@@ -80,8 +81,6 @@ public class Query {
             String narrative = narrativeStr.replace("\n"," ").replace("Narrative: ","").trim();
             String queryString = title;
             queryString += " " + narrative;
-            //System.out.println(queryString);
-            //System.out.println(queryString);
 			org.apache.lucene.search.Query query = parser.parse(QueryParser.escape(queryString.trim()));
             queryString = "";
             //System.out.println(query);
