@@ -12,7 +12,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
 import org.apache.lucene.queryparser.classic.MultiFieldQueryParser;
@@ -38,15 +37,15 @@ public class Query {
 		Elements topics = null;
 		PrintWriter writer = null;
 		QueryParserBase parser = null;
-		Analyzer analyzer = new EnglishAnalyzer();
+		Analyzer analyzer = ChangedAnalyzer.getAnalyzer();
 		IndexReader reader = DirectoryReader.open(FSDirectory.open(Paths.get(indexPath)));
         IndexSearcher searcher = new IndexSearcher(reader);
         searcher.setSimilarity(new BM25Similarity());
         BufferedReader in = Files.newBufferedReader(Paths.get(queries), StandardCharsets.UTF_8);
         writer = new PrintWriter(output_path+"/outputs.txt", "UTF-8");
         HashMap<String, Float> boostedScores = new HashMap<String, Float>();
-        boostedScores.put("TEXT", 0.65f);
-        boostedScores.put("HEADLINE", 0.35f);
+        boostedScores.put("TEXT", 0.95f);
+        boostedScores.put("HEADLINE", 0.05f);
         parser = new MultiFieldQueryParser(
                 new String[]{"TEXT", "HEADLINE", "DOCNO"},
                 analyzer, boostedScores);
@@ -80,24 +79,25 @@ public class Query {
 
             String narrative = narrativeStr.replace("\n"," ").replace("Narrative: ","").trim();
             String queryString = title;
-            queryString += narrative;
+            queryString += " " + narrative;
             //System.out.println(queryString);
-            
+            //System.out.println(queryString);
 			org.apache.lucene.search.Query query = parser.parse(QueryParser.escape(queryString.trim()));
             queryString = "";
             //System.out.println(query);
             TopDocs results = searcher.search(query,1000);
             ScoreDoc[] hits = results.scoreDocs;
-            //System.out.println(hits);
+            System.out.println(hits.length);
             for (int i = 0; i < hits.length; i++) {
                 ScoreDoc hit = hits[i];
 				writer.println(number + " 0 " + searcher.doc(hit.doc).get("DOCNO").replace("<docno>", "").replace("</docno>", "").trim() + " " + i + " " + hits[i].score + " STANDARD");
 				//System.out.println(number + " 0 " + searcher.doc(hit.doc).get("DOCNO").replace("<docno>", "").replace("</docno>", "").trim() + " " + i + " " + hits[i].score + " STANDARD");
 				
             }
-            } 
+		}
 		writer.close();
-        }
-
 	}
+
+
+}
 

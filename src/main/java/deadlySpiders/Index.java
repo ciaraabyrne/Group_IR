@@ -22,23 +22,31 @@ public class Index
 
     public static void index(String indexDir, String FBISPath, String laTimesPath, String fedRegPath, String financialTimesPath) throws IOException {
         System.out.println("Building index...");
-        Analyzer analyzer = new EnglishAnalyzer();
+        Analyzer analyzer = ChangedAnalyzer.getAnalyzer();
         Directory index_dir = FSDirectory.open(Paths.get(indexDir));
         IndexWriterConfig config = new IndexWriterConfig(analyzer);
         config.setOpenMode(IndexWriterConfig.OpenMode.CREATE);
         IndexWriter iwriter = new IndexWriter(index_dir, config);
+        int docCount = 0;
         List<Document> parsedDocs = FBIS.getFbisFiles("files/fbis");
+        docCount += parsedDocs.size();
         iwriter.addDocuments(parsedDocs);
         iwriter.commit();
         parsedDocs = LATimes.parseLaTimes("files/latimes");
+        docCount += parsedDocs.size();
         iwriter.addDocuments(parsedDocs);
         iwriter.commit();
         parsedDocs = FederalReg.parseFedRegisterDocs("files/fr94");
+        docCount += parsedDocs.size();
         iwriter.addDocuments(parsedDocs);
         iwriter.commit();
         parsedDocs = FinancialTimes.parseFinancialTimes("files/ft");
+        docCount += parsedDocs.size();
+        System.out.println("Doc count=" + docCount);
         iwriter.addDocuments(parsedDocs);
         iwriter.commit();
         iwriter.close();
     }
+
+
 }
