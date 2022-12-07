@@ -7,11 +7,13 @@ import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.index.DirectoryReader;
 import org.apache.lucene.index.IndexReader;
@@ -45,8 +47,8 @@ public class Query {
         BufferedReader in = Files.newBufferedReader(Paths.get(queries), StandardCharsets.UTF_8);
         writer = new PrintWriter(output_path+"/outputs.txt", "UTF-8");
         HashMap<String, Float> boostedScores = new HashMap<String, Float>();
-        boostedScores.put("TEXT", 0.95f);
-        boostedScores.put("HEADLINE", 0.05f);
+        boostedScores.put("TEXT", 0.85f);
+        boostedScores.put("HEADLINE", 0.15f);
         parser = new MultiFieldQueryParser(
                 new String[]{"TEXT", "HEADLINE", "DOCNO"},
                 analyzer, boostedScores);

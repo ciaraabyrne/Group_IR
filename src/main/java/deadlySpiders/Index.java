@@ -5,6 +5,7 @@ import deadlySpiders.Parsers.FederalReg;
 import deadlySpiders.Parsers.FinancialTimes;
 import deadlySpiders.Parsers.LATimes;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.CharArraySet;
 import org.apache.lucene.analysis.en.EnglishAnalyzer;
 import org.apache.lucene.document.Document;
 import org.apache.lucene.index.IndexWriter;
@@ -14,6 +15,7 @@ import org.apache.lucene.store.FSDirectory;
 
 import java.io.IOException;
 import java.nio.file.Paths;
+import java.util.Arrays;
 import java.util.List;
 
 
